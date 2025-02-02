@@ -1,0 +1,32 @@
+services:
+  trip_together_db:
+    image: postgres:15.8-alpine
+    environment:
+      POSTGRES_DB: 'trip_together_db'
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
+    ports:
+      - '54322:5432'
+    networks:
+      - backend
+    volumes:
+      - ./trip_together/postgres/data:/var/lib/postgresql/data
+
+
+  trip_together_backend:
+    build: ../
+    depends_on:
+      - trip_together_db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://trip_together_db:5432/trip_together_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+networks:
+  backend:
+    name: back-network
+    driver: bridge
