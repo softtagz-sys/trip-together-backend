@@ -24,7 +24,7 @@ FROM eclipse-temurin:23-jre-alpine
 WORKDIR /app
 
 # Copy only the built JAR from the builder stage
-COPY --from=builder /app/build/libs/*.jar app.jar
+COPY --from=builder /app/build/libs/trip-together-backend-0.0.1.jar /app/app.jar
 
 # Expose the application port
 EXPOSE 8080
